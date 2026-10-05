@@ -1,6 +1,6 @@
 {
   "name": "dsh-effort-slider",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "科幻推理等级滑条：把推理档位做成一条能量滑条，附加 Ultra 档、闪电编排模式与子代理 tok/s 读数 / A sci-fi reasoning-effort slider for DeepSeek Harness (DSH), with an Ultra level, a lightning orchestration mode and a live subagent tok/s readout",
   "license": "MIT",

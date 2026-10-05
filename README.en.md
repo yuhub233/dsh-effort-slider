@@ -61,6 +61,8 @@ Requires **DSH Desktop ≥ 2.0.9**. The repository ships a prebuilt `lib/client.
 dsh plugin add github:yuhub233/dsh-effort-slider
 ```
 
+Or download `dsh-effort-slider-<version>.zip` from [Releases](https://github.com/yuhub233/dsh-effort-slider/releases) (it contains the plugin already built), unzip it, and put the `dsh-effort-slider/` directory into `<DSH_HOME>/plugins/`.
+
 Manual install: copy the repository directory into `<DSH_HOME>/plugins/` (on Windows by default `C:\Users\<you>\.dsh\plugins\`), then restart DSH. The plugin's own `cordis.patch.yml` is loaded automatically by the profile's bundle mechanism.
 
 Uninstall: delete that directory (and remove the line if you registered it in the profile's `dsh.profile.bundles`), then restart DSH.

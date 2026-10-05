@@ -61,6 +61,8 @@ DSH 的推理等级默认是一个下拉选择。这个插件把它换成一条*
 dsh plugin add github:yuhub233/dsh-effort-slider
 ```
 
+或者从 [Releases](https://github.com/yuhub233/dsh-effort-slider/releases) 下载 `dsh-effort-slider-<版本>.zip`（里面就是构建好的插件），解压后把 `dsh-effort-slider/` 目录放进 `<DSH_HOME>/plugins/`。
+
 手动安装：把仓库目录复制到 `<DSH_HOME>/plugins/`（Windows 默认 `C:\Users\<你>\.dsh\plugins\`），然后重启 DSH。插件自带的 `cordis.patch.yml` 会被 profile 的 bundle 机制自动加载。
 
 卸载：删掉那个目录（若你在 profile 的 `dsh.profile.bundles` 里登记过，一并删掉那行），重启 DSH。
