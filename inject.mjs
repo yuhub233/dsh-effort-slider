@@ -18,10 +18,13 @@
  * 本模块采用与引擎同款的三条纪律：
  *   · **变了才注入**：把"上一次注入的文本"按 session 记住，文本相同就原样放行；
  *   · 先 `await next()`，在框架自己的决定之上追加，绝不吞掉别人的决定；
- *   · 注入的是 `source: { kind:"plugin", plugin, form:"instructions" }` 的 user 消息。
+ *   · 注入的是 `source: { kind:"plugin:<插件名>", form:"instructions" }` 的 user 消息
+ *     （DSH V4 起 producer 归属写进 kind 本体；裸 `kind:"plugin"` 会被 V4 落盘准入拒绝）。
  *
  * 会话恢复期的硬约束（违反不会有即时报错，而是**下次恢复会话时报损坏**，所以一条都不能错）：
  *   `id` 非空字符串 / `role === "user"` / `source.kind` 非空字符串 / `content` 是数组。
+ *   V4 追加：`source.kind` 不能是裸 `"plugin"`（生产者归属要用 `plugin:<名字>` 这样的自有 kind，
+ *   其余自有元数据如 `form` 原样保留——与 V3→V4 迁移器 `rewritePluginSource` 的语义一致）。
  *
  * 红线：
  *   · **只影响被跟踪的那一个 session**：按 `agent.id` 精确比对。子代理会继承父代理的
@@ -50,7 +53,7 @@ export function createPolicyInjector(ctx, options = {}) {
       id: randomUUID(),
       role: "user",
       content: [{ type: "text", text }],
-      source: { kind: "plugin", plugin: "dsh-effort-slider", form: "instructions" },
+      source: { kind: "plugin:dsh-effort-slider", form: "instructions" },
     };
   }
 
