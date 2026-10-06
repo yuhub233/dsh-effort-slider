@@ -146,8 +146,14 @@ export function createPolicyInjector(ctx, { log, resolve })
 
 1. `id` 是非空字符串；2. `role === "user"`；3. `source.kind` 是非空字符串；4. `content` 是数组。
 
-`form: "instructions"`、`source.plugin` 均**不被运行时校验**（但按框架约定带上）。
+**DSH V4 起的消息来源**：producer 归属写进 `kind` 本体——`source.kind = "plugin:dsh-effort-slider"`，
+不再携带 `plugin` 属性（V3 旧写法 `{kind:"plugin", plugin:"…"}` 会被 V4 落盘准入
+`SessionFormatError: format v4 message requires a producer-owned source kind` 拒绝）。
+`form: "instructions"` 作为自有元数据原样保留，与 V3→V4 迁移器 `rewritePluginSource`
+（`dsh-session-format-v3-to-v4`）的转换语义一致，也和内置 `dsh-time-context`
+（`{kind: name, form: "snapshot"}`）同构。
 
-**已知的可见性后果**：注入的文本会作为 `source.kind='plugin'` 的 user 消息进入会话日志
-（DSH 自己的运行时上下文、`@pluginId` 参考上下文走的是同一条路），因此**在会话记录里可见**——
+**已知的可见性后果**：注入的文本会作为 `source.kind='plugin:dsh-effort-slider'` 的 user 消息
+进入会话日志（DSH 自己的运行时上下文、`@pluginId` 参考上下文走的是同一条路），
+因此**在会话记录里可见**——
 这正好与"策略 chip 可读原文"的透明性目标一致，但不要再把它描述成"完全不可见"。
