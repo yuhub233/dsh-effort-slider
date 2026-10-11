@@ -144,10 +144,13 @@ export function createPolicyInjector(ctx, { log, resolve })
 **会话恢复期的 4 条硬约束**（违反不会即时报错，而是下次恢复会话时报
 `SessionPersistenceCorruptionError`，所以一条都不能错）：
 
-1. `id` 是非空字符串；2. `role === "user"`；3. `source.kind` 是非空字符串；4. `content` 是数组。
+1. `id` 是非空字符串；2. `role === "user"`；3. `source.kind` 是**生产者自有的非空字符串**
+（形如 `plugin:dsh-effort-slider`，禁止裸 `kind:"plugin"` + `plugin` 对——DSH 会话格式 v4
+已把该旧形式退休，落盘准入会直接抛 `format v4 message requires a producer-owned source kind`，
+导致整个回合失败）；4. `content` 是数组。
 
-`form: "instructions"`、`source.plugin` 均**不被运行时校验**（但按框架约定带上）。
+`form: "instructions"` 按框架约定带上（不被运行时校验）；`source.plugin` **已移除**。
 
-**已知的可见性后果**：注入的文本会作为 `source.kind='plugin'` 的 user 消息进入会话日志
+**已知的可见性后果**：注入的文本会作为 `source.kind='plugin:dsh-effort-slider'` 的 user 消息进入会话日志
 （DSH 自己的运行时上下文、`@pluginId` 参考上下文走的是同一条路），因此**在会话记录里可见**——
 这正好与"策略 chip 可读原文"的透明性目标一致，但不要再把它描述成"完全不可见"。

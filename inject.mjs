@@ -18,7 +18,9 @@
  * 本模块采用与引擎同款的三条纪律：
  *   · **变了才注入**：把"上一次注入的文本"按 session 记住，文本相同就原样放行；
  *   · 先 `await next()`，在框架自己的决定之上追加，绝不吞掉别人的决定；
- *   · 注入的是 `source: { kind:"plugin", plugin, form:"instructions" }` 的 user 消息。
+ *   · 注入的是 `source: { kind:"plugin:dsh-effort-slider", form:"instructions" }` 的 user 消息
+ *     （v4 会话格式要求生产者自有 kind：禁止裸 `kind:"plugin"` + `plugin` 对，
+ *      旧形式会在落盘准入时抛 "format v4 message requires a producer-owned source kind"）。
  *
  * 会话恢复期的硬约束（违反不会有即时报错，而是**下次恢复会话时报损坏**，所以一条都不能错）：
  *   `id` 非空字符串 / `role === "user"` / `source.kind` 非空字符串 / `content` 是数组。
@@ -50,7 +52,7 @@ export function createPolicyInjector(ctx, options = {}) {
       id: randomUUID(),
       role: "user",
       content: [{ type: "text", text }],
-      source: { kind: "plugin", plugin: "dsh-effort-slider", form: "instructions" },
+      source: { kind: "plugin:dsh-effort-slider", form: "instructions" },
     };
   }
 

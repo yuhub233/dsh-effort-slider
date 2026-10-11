@@ -149,7 +149,7 @@ async function injectionSuite() {
     ok(typeof injected.id === "string" && injected.id.length > 0, "[1] id 是非空字符串（会话恢复硬约束）");
     ok(injected.role === "user", "[1] role === 'user'");
     ok(injected.source && typeof injected.source.kind === "string" && injected.source.kind.length > 0, "[1] source.kind 非空");
-    ok(injected.source.plugin === "dsh-effort-slider" && injected.source.form === "instructions", "[1] source 带 plugin + form:instructions");
+    ok(injected.source.plugin === undefined && injected.source.kind === "plugin:dsh-effort-slider" && injected.source.form === "instructions", "[1] source.kind 是生产者自有 kind（plugin:dsh-effort-slider）+ form:instructions");
     ok(Array.isArray(injected.content) && injected.content[0].type === "text" && injected.content[0].text === "POLICY-A", "[1] content 是数组且文本正确");
 
     // [2] 文本没变 → 不再注入
